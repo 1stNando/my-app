@@ -3,24 +3,35 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 // This is the child component. Prop passed from Board().
-// By calling setValue from an onClick handler, we tell React to re-render that Square whenever its <button> is clicked. After the update, the Square’s value will be 'X', so we’ll see the X on the game board. If you click on any Square, an X should show up.
+// setValue is a setter function. By calling setValue from an onClick handler, we tell React to re-render that Square whenever its <button> is clicked. After the update, the Square’s value will be 'X', so we’ll see the X on the game board. If you click on any Square, an X should show up.
 function Square(props) {
-  const [value, setValue] = useState('');
-
   return (
     <button
       className="square"      
       
-      onClick={() => setValue('X')}    >
-      {value}    </button>
+      onClick={() => props.onClick('X')}    >
+      {props.value}    </button>
   );
 }
 
 // This is the parent component.
 function Board() {
+
+  // Add a useState call to set a state value
+  const [squares, setSquares] = useState(Array(9).fill(null))
   
   function renderSquare(i) {
-    return <Square value={i} />;
+
+    function handleClick(i) {
+      throw new Error('Function not implemented.');
+    }
+
+    return (
+      <Square
+        value={squares[i]}
+        onClick={() => handleClick(i)}
+        />
+    );
   }
 
   const status = 'Next player: X';
