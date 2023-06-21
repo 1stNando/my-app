@@ -2,17 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square() {
+// This is the child component. Prop passed from Board().
+function Square(props) {
   return (
     <button className="square">
-      {/* TODO */}
+      {props.value}
     </button>
   );
 }
 
+// This is the parent component.
 function Board() {
   function renderSquare(i) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   const status = 'Next player: X';
