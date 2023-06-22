@@ -30,11 +30,14 @@ function Board() {
   // New useState call, and set the first move to be "X" by default. Each time a player moves, xIsNext (a boolean) will be flipped to determine which player goes next and the game’s state will be saved.
   const[xIsNext, setXIsNext] = useState(true)
 
-  // Define handleClick function used in helper function.
+  // First define handleClick function used in helper function.
+  // We’ll update the Board’s handleClick function to flip the value of xIsNext.
   function handleClick(i) {
     const newSquares = squares.slice()
-    newSquares[i] = 'X'
+    newSquares[i] = xIsNext ? 'X' : 'O'
+    
     setSquares(newSquares)
+    setXIsNext(!xIsNext)
   }
   
   // Helper function:
