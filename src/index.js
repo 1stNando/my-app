@@ -4,13 +4,20 @@ import './index.css';
 
 // This is the child component. Prop passed from Board().
 // setValue is a setter function. By calling setValue from an onClick handler, we tell React to re-render that Square whenever its <button> is clicked. After the update, the Square’s value will be 'X', so we’ll see the X on the game board. If you click on any Square, an X should show up.
+
+// The code defines a functional component called Square that represents an individual square on the game board. It takes a props parameter, which is an object containing properties passed to the component.
+
+// Within the Square component, the useState hook is used to define a state variable value and its corresponding setter function setValue. The initial state of value is an empty string.
+
+// The Square component returns a button element. When the button is clicked, the onClick event is triggered, and it calls an arrow function that sets the value state to 'X'.
 function Square(props) {
   return (
     <button
       className="square"      
       
-      onClick={() => props.onClick('X')}    >
-      {props.value}    </button>
+      onClick={() => props.onClick('X')}> {props.value}   
+
+    </button>
   );
 }
 
@@ -19,14 +26,17 @@ function Board() {
 
   // Add a useState call to set a state value
   const [squares, setSquares] = useState(Array(9).fill(null))
+
+  // Define handleClick function used in helper function.
+  function handleClick(i) {
+    const newSquares = squares.slice()
+    newSquares[i] = 'X'
+    setSquares(newSquares)
+  }
   
+  // Helper function:
   function renderSquare(i) {
-
-    function handleClick(i) {
-      throw new Error('Function not implemented.');
-    }
-
-    return (
+   return (
       <Square
         value={squares[i]}
         onClick={() => handleClick(i)}
