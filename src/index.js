@@ -50,7 +50,7 @@ function Board() {
     );
   }
 
-  const status = 'Next player: X';
+  const status = 'Next player: ' + (xIsNext ? 'X' : 'O')
 
   return (
     <div>
