@@ -33,6 +33,11 @@ function Board() {
   // First define handleClick function used in helper function.
   // We’ll update the Board’s handleClick function to flip the value of xIsNext.
   function handleClick(i) {
+    // now change the Board’s handleClick function to return early by ignoring a click if someone has won the game or if a Square is already filled.
+    if (calculateWinner(squares) || squares[i]) {
+      return
+    }
+
     const newSquares = squares.slice()
     newSquares[i] = xIsNext ? 'X' : 'O'
     
