@@ -21,51 +21,19 @@ function Square(props) {
   );
 }
 
-// This is the parent component.
-function Board() {
-
-  // Add a useState call to set a state value
-  const [squares, setSquares] = useState(Array(9).fill(null))
-
-  // New useState call, and set the first move to be "X" by default. Each time a player moves, xIsNext (a boolean) will be flipped to determine which player goes next and the game’s state will be saved.
-  const[xIsNext, setXIsNext] = useState(true)
-
-  // First define handleClick function used in helper function.
-  // We’ll update the Board’s handleClick function to flip the value of xIsNext.
-  function handleClick(i) {
-    // now change the Board’s handleClick function to return early by ignoring a click if someone has won the game or if a Square is already filled.
-    if (calculateWinner(squares) || squares[i]) {
-      return
-    }
-
-    const newSquares = squares.slice()
-    newSquares[i] = xIsNext ? 'X' : 'O'
-    
-    setSquares(newSquares)
-    setXIsNext(!xIsNext)
-  }
-  
-  // Helper function:
+// This is the parent component to the child Square() component!
+function Board(props) {
   function renderSquare(i) {
-   return (
+    return (
       <Square
-        value={squares[i]}
-        onClick={() => handleClick(i)}
-        />
+        value={props.squares[i]}
+        onClick={() => props.onClick(i)}
+      />
     );
-  }
-
-  const winner = calculateWinner(squares)
-  let status 
-  if (winner) {
-    status = 'Winner: ' + winner
-  } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O')
   }
 
   return (
     <div>
-      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
@@ -85,19 +53,58 @@ function Board() {
   );
 }
 
+// This is the TOP-LEVEL component
 function Game() {
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
+  const [xIsNext, setXIsNext] = useState(true);
+
+  function handleClick(i) {
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = xIsNext ? "X" : "O";
+
+    setHistory(history.concat([{ squares: squares }]));
+    setXIsNext(!xIsNext);
+  }
+
+  const current = history[history.length - 1];
+  const winner = calculateWinner(current.squares);
+  
+  let status;
+  if (winner) {
+    status = "Winner: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
+  }
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board
+          squares={current.squares}
+          onClick={i => handleClick(i)}
+        />
       </div>
       <div className="game-info">
-        <div>{/* status */}</div>
+        <div>{status}</div>
         <ol>{/* TODO */}</ol>
       </div>
     </div>
   );
 }
+
+
+
+
+// ========================================
+
+ReactDOM.render(
+  <Game />,
+  document.getElementById('root')
+);
 
 // Declaring a Winner:
 function calculateWinner(squares) {
@@ -109,20 +116,15 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6],
-  ]
+    [2, 4, 6]
+  ];
+  
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a]
+      return squares[a];
     }
   }
-  return null
+  
+  return null;
 }
-
-// ========================================
-
-ReactDOM.render(
-  <Game />,
-  document.getElementById('root')
-);
