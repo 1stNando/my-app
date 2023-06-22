@@ -27,6 +27,9 @@ function Board() {
   // Add a useState call to set a state value
   const [squares, setSquares] = useState(Array(9).fill(null))
 
+  // New useState call, and set the first move to be "X" by default. Each time a player moves, xIsNext (a boolean) will be flipped to determine which player goes next and the game’s state will be saved.
+  const[xIsNext, setXIsNext] = useState(true)
+
   // Define handleClick function used in helper function.
   function handleClick(i) {
     const newSquares = squares.slice()
