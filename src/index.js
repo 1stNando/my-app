@@ -101,7 +101,7 @@ function Game() {
     setXIsNext((step % 2) === 0)
   }
 
-  const current = history[history.length - 1]
+  const current = history[stepNumber]
   const winner = calculateWinner(current.squares)
 
   // Add this to start Showing the Past Moves.
