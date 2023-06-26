@@ -1,4 +1,6 @@
 June 22, 2023
+https://reactwithhooks.netlify.app/tutorial/tutorial.html#showing-the-past-moves 
+Walk-through React with hooks powered TicTacToe game from above website. 
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
