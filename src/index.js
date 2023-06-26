@@ -89,6 +89,12 @@ function Game() {
     setXIsNext(!xIsNext)
   }
 
+  // Next, we’ll define the jumpTo function in Game to update that stepNumber. We also set xIsNext to true if the number that we’re changing stepNumber to is even:
+  function jumpTo(step) {
+    setStepNumber(step)
+    setXIsNext((step % 2) === 0)
+  }
+
   const current = history[history.length - 1]
   const winner = calculateWinner(current.squares)
 
