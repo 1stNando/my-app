@@ -77,8 +77,13 @@ function Game() {
     // Finally, we need to move the handleClick function from the Board component to the Game component. We also need to modify handleClick because the Game component’s state is structured differently. Within the Game’s handleClick function, we concatenate new history entries onto history.
     // Note: Unlike the array push() method you might be more familiar with, the concat() method doesn’t mutate the original array, so we prefer it.
 
-    const current = history[history.length - 1]
-    const squares = current.squares.slice()
+
+    // The stepNumber state we’ve added reflects the move displayed to the user now. After we make a new move, we need to update stepNumber by calling setStepNumber(history.length). This ensures we don’t get stuck showing the same move after a new one has been made.
+    // We will also replace reading history with history.slice(0, stepNumber + 1). This ensures that if we “go back in time” and then make a new move from that point, we throw away all the “future” history that would now become incorrect.
+
+    const currentHistory = history.slice(0, stepNumber + 1)
+    const currentStep = currentHistory[currentHistory.length - 1]
+    const squares = currentStep.squares.slice()
 
     if (calculateWinner(squares) || squares[i]) {
       return
@@ -86,6 +91,7 @@ function Game() {
     squares[i] = xIsNext ? "X" : "O"
 
     setHistory(history.concat([{ squares: squares }]))
+    setStepNumber(currentHistory.length)
     setXIsNext(!xIsNext)
   }
 
