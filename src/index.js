@@ -70,6 +70,7 @@ function Board(props) {
 // This is the TOP-LEVEL component
 function Game() {
   const [history, setHistory] = useState([{ squares: Array(9).fill(null) }])
+  const [stepNumber, setStepNumber] = useState(0)
   const [xIsNext, setXIsNext] = useState(true)
 
   function handleClick(i) {
