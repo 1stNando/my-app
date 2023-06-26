@@ -23,14 +23,28 @@ function Square(props) {
 
 // This is the parent component to the child Square() component!
 function Board(props) {
+  // BELOW: lifted the State Up to the Game() component.
+  // const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
+  // const [xIsNext, setXIsNext] = useState(true);
+  // function handleClick(i) {
+  //   if (calculateWinner(squares) || squares[i]) {
+  //     return
+  //   }
+  //   const newSquares = squares.slice()
+  //   newSquares[i] = xIsNext ? 'X' : 'O'
+  //   setSquares(newSquares)
+  //   setXIsNext(!xIsNext)
+  // }
+
   function renderSquare(i) {
     return (
       <Square
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)}
-      />
-    );
+        value={props.squares[i]}        
+        onClick={() => props.onClick(i)}      />
+    )
   }
+
+  //const status = 'Next player: ' + (xIsNext ? 'X' : 'O')
 
   return (
     <div>
@@ -50,34 +64,38 @@ function Board(props) {
         {renderSquare(8)}
       </div>
     </div>
-  );
+  )
 }
 
 // This is the TOP-LEVEL component
 function Game() {
-  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
-  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }])
+  const [xIsNext, setXIsNext] = useState(true)
 
   function handleClick(i) {
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = xIsNext ? "X" : "O";
+    // Finally, we need to move the handleClick function from the Board component to the Game component. We also need to modify handleClick because the Game component’s state is structured differently. Within the Game’s handleClick function, we concatenate new history entries onto history.
+    // Note: Unlike the array push() method you might be more familiar with, the concat() method doesn’t mutate the original array, so we prefer it.
 
-    setHistory(history.concat([{ squares: squares }]));
-    setXIsNext(!xIsNext);
+    const current = history[history.length - 1]
+    const squares = current.squares.slice()
+
+    if (calculateWinner(squares) || squares[i]) {
+      return
+    }
+    squares[i] = xIsNext ? "X" : "O"
+
+    setHistory(history.concat([{ squares: squares }]))
+    setXIsNext(!xIsNext)
   }
 
-  const current = history[history.length - 1];
-  const winner = calculateWinner(current.squares);
+  const current = history[history.length - 1]
+  const winner = calculateWinner(current.squares)
   
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = "Winner: " + winner
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    status = "Next player: " + (xIsNext ? "X" : "O")
   }
 
   return (
@@ -93,7 +111,7 @@ function Game() {
         <ol>{/* TODO */}</ol>
       </div>
     </div>
-  );
+  )
 }
 
 
